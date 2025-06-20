@@ -1,0 +1,491 @@
+/* src/pages/admin/AdminPages.module.css */
+.adminPageContainer {
+  padding: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.adminPageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap; 
+  gap: 15px;
+}
+
+.adminPageHeader h1 {
+  font-size: var(--font-size-xxl);
+  color: var(--color-black);
+  margin: 0;
+}
+
+/* Style général pour les boutons admin (peut être surchargé) */
+.adminButton { /* Ce style de base est bon */
+  padding: 10px 18px;
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--font-size-normal);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--color-dark-gray);
+  cursor: pointer;
+  display: inline-flex; 
+  align-items: center;
+  box-shadow: var(--box-shadow-light);
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+.adminButton:hover {
+    background-color: var(--color-bg-gray); 
+    border-color: var(--color-medium-gray);
+    box-shadow: var(--box-shadow-medium);
+    transform: translateY(-1px);
+    color: var(--color-black); /* Assurer que le texte reste noir */
+}
+
+/* Bouton primaire admin (ex: "Ajouter une Nouvelle Ressource") */
+.primaryButton {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-black); /* Bordure noire pour le bouton primaire */
+}
+.primaryButton:hover {
+  background-color: var(--color-white);  /* Fond blanc au survol */
+  color: var(--color-black);           /* Texte noir au survol */
+  border-color: var(--color-black);    /* Bordure noire pour contraste */
+}
+
+.statusMessage {
+  text-align: center;
+  font-size: var(--font-size-medium);
+  padding: 30px 0;
+  color: var(--color-medium-gray);
+}
+
+.errorMessage { /* Réutiliser les variables d'erreur globales */
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+  padding: 15px;
+  border-radius: var(--border-radius-sm);
+}
+
+.adminTableContainer {
+  overflow-x: auto; 
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-light);
+  border: 1px solid var(--color-lighter-gray);
+}
+
+.adminTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-small);
+}
+
+.adminTable th,
+.adminTable td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-lighter-gray);
+}
+
+.adminTable th {
+  background-color: var(--color-bg-gray); /* Fond gris très clair pour les en-têtes */
+  color: var(--color-dark-gray);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem; /* Plus petit pour les en-têtes de tableau */
+  border-bottom-width: 2px; /* Bordure plus épaisse sous les en-têtes */
+}
+
+.adminTable tbody tr:hover {
+  background-color: var(--color-bg-gray); /* Survol de ligne gris clair */
+}
+
+.actionsCell {
+  display: flex;
+  gap: 8px; 
+  align-items: center;
+  flex-wrap: nowrap; 
+}
+
+.actionButton { /* Boutons d'action dans le tableau (Voir, Modifier, Supprimer) */
+  padding: 6px 10px;
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--font-size-small);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  border: 1px solid var(--color-light-gray); /* Bordure gris clair */
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap; 
+  background-color: var(--color-white);
+  color: var(--color-dark-gray);
+}
+.actionButton span { 
+  margin-left: 5px;
+}
+
+.viewButton:hover {
+  background-color: var(--color-medium-gray); /* Gris moyen au survol */
+  color: var(--color-white);
+  border-color: var(--color-medium-gray);
+}
+.editButton:hover {
+  background-color: var(--color-dark-gray); /* Gris foncé au survol */
+  color: var(--color-white);
+  border-color: var(--color-dark-gray);
+}
+.deleteButton { /* Bouton supprimer reste rouge */
+  background-color: var(--color-red-destructive); 
+  color: var(--color-white);
+  border-color: var(--color-red-destructive);
+}
+.deleteButton:hover {
+  background-color: var(--color-red-destructive-hover);
+  border-color: var(--color-red-destructive-hover);
+  color: var(--color-white);
+}
+.deleteButton:disabled {
+    background-color: var(--color-lighter-gray);
+    color: var(--color-medium-gray);
+    border-color: var(--color-lighter-gray);
+    cursor: not-allowed;
+}
+
+
+@media screen and (max-width: 768px) {
+  .adminTable thead {
+    display: none; 
+  }
+  .adminTable, .adminTable tbody, .adminTable tr, .adminTable td {
+    display: block;
+    width: 100%;
+  }
+  .adminTable tr {
+    margin-bottom: 15px;
+    border: 1px solid var(--color-lighter-gray);
+    border-radius: var(--border-radius-md); 
+    box-shadow: var(--box-shadow-light);
+  }
+  .adminTable td {
+    text-align: right; 
+    padding-left: 50%; 
+    position: relative;
+    border-bottom: none; 
+  }
+  .adminTable td:last-child {
+    border-bottom: 0; 
+  }
+  .adminTable td::before {
+    content: attr(data-label); 
+    position: absolute;
+    left: 15px; 
+    width: calc(50% - 30px); 
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+    color: var(--color-dark-gray);
+  }
+  .actionsCell {
+    justify-content: flex-end; 
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+   .actionButton span { 
+    display: none;
+  }
+}
+
+.resourceForm { 
+  max-width: 700px; 
+  margin: 20px auto; 
+  background-color: var(--color-white); /* Fond blanc pour le formulaire lui-même */
+  padding: 30px;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-medium);
+  border: 1px solid var(--color-lighter-gray);
+}
+
+.textareaInput { /* S'applique aux textareas dans les formulaires admin */
+  min-height: 100px; 
+  resize: vertical; 
+}
+
+.formRow { 
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px; /* Remplacé par le margin-bottom de formGroup */
+}
+
+.formGroupThird { /* Pour les champs sur une ligne, divisés en trois */
+  flex: 1; 
+  /* Le margin-bottom est déjà sur formStyles.formGroup */
+}
+
+.detailsFieldset {
+  border: 1px solid var(--color-lighter-gray);
+  padding: 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border-radius: var(--border-radius-md);
+}
+
+.detailsFieldset legend {
+  font-weight: 500;
+  padding: 0 10px;
+  color: var(--color-dark-gray);
+  font-size: var(--font-size-medium);
+}
+
+.submitResourceButton { /* Bouton de soumission pour les formulaires admin */
+  margin-top: 20px;
+  background-color: var(--color-black); 
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+.submitResourceButton:hover {
+  background-color: var(--color-dark-gray);
+  border-color: var(--color-dark-gray);
+}
+
+
+@media (max-width: 768px) {
+  .resourceForm {
+    max-width: 100%;
+    padding: 20px; 
+  }
+  .formRow {
+    flex-direction: column; 
+    gap: 0; 
+  }
+}
+
+/* Badges pour le type d'utilisateur dans le tableau */
+.userTypeBadge {
+  padding: 4px 10px; /* Un peu plus de padding */
+  border-radius: var(--border-radius-sm); /* Moins arrondi pour un look plus "badge" */
+  font-size: 0.75rem; /* Plus petit */
+  font-weight: 600; /* Plus gras */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid; /* Ajout d'une bordure */
+  display: inline-block; /* Pour que le padding/border s'applique bien */
+}
+
+.userTypeBadge.student {
+  background-color: var(--color-bg-gray); 
+  color: var(--color-dark-gray);
+  border-color: var(--color-light-gray);
+}
+
+.userTypeBadge.admin {
+  background-color: var(--color-dark-gray); 
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+.fieldNote {
+    display: block;
+    font-size: var(--font-size-small);
+    color: var(--color-medium-gray);
+    margin-top: 5px;
+}
+
+.secondaryButton { /* Pour le bouton "Retour à la liste" */
+  background-color: var(--color-bg-gray);
+  color: var(--color-dark-gray);
+  border-color: var(--color-light-gray);
+}
+.secondaryButton:hover {
+  background-color: var(--color-lighter-gray);
+  border-color: var(--color-medium-gray);
+}
+
+.formErrorMessage { /* Pour s'assurer qu'il est visible sur le fond admin */
+    margin-bottom: 20px;
+}
+
+.resourceForm { 
+  max-width: 800px; /* Formulaire un peu plus large pour les détails */
+  margin: 20px auto; 
+  background-color: var(--color-white); 
+  padding: 30px 40px; /* Plus de padding */
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-medium);
+  border: 1px solid var(--color-lighter-gray);
+}
+
+.textareaInputSmall { /* Pour la description courte */
+  min-height: 80px; 
+  resize: vertical; 
+}
+.textareaInputLarge { /* Pour le contenu d'article ou JSON */
+  min-height: 250px;
+  resize: vertical;
+  font-family: monospace; /* Utile pour le JSON */
+  font-size: 0.9rem; /* Un peu plus petit pour le JSON */
+  line-height: 1.4;
+}
+.jsonTextarea {
+    white-space: pre; /* Pour que les indentations JSON soient respectées à la saisie */
+    overflow-wrap: normal; /* Empêcher le retour à la ligne automatique bizarre dans le textarea */
+    overflow-x: auto; /* Permettre le défilement horizontal pour les longues lignes JSON */
+}
+
+
+.formRow { 
+  display: flex;
+  gap: 20px;
+  /* margin-bottom est sur formStyles.formGroup */
+}
+
+.formGroupThird { 
+  flex: 1; 
+}
+
+.detailsFieldset {
+  border: 1px solid var(--color-lighter-gray); /* Bordure plus subtile */
+  padding: 20px 25px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border-radius: var(--border-radius-md);
+}
+
+.detailsFieldset legend {
+  font-weight: 600; /* Plus gras */
+  padding: 0 10px;
+  color: var(--color-dark-gray);
+  font-size: 1.15rem; /* Un peu plus grand */
+}
+
+.jsonHint {
+    font-size: var(--font-size-small);
+    color: var(--color-medium-gray);
+    margin-bottom: 10px;
+    background-color: var(--color-bg-gray);
+    padding: 8px;
+    border-radius: var(--border-radius-sm);
+    line-height: 1.4;
+}
+
+.submitResourceButton { 
+  margin-top: 20px;
+  background-color: var(--color-black); 
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+.submitResourceButton:hover {
+  background-color: var(--color-dark-gray);
+  border-color: var(--color-dark-gray);
+}
+
+.questionBlock {
+  border: 1px solid var(--color-light-gray);
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-off-white); /* Léger fond pour distinguer les questions */
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.questionHeader h4 {
+  margin: 0;
+  font-size: 1.2rem; /* Taille du titre "Question X" */
+  color: var(--color-dark-gray);
+}
+
+.questionActionButton {
+  background: none;
+  border: none;
+  color: var(--color-medium-gray);
+  cursor: pointer;
+  padding: 5px;
+  font-size: 1rem; /* Taille des icônes d'action question */
+  margin-left: 8px;
+}
+.questionActionButton:hover {
+  color: var(--color-black);
+}
+.questionActionButton:disabled {
+    color: var(--color-lighter-gray);
+    cursor: not-allowed;
+}
+
+.removeButton { /* Pour supprimer question/option */
+  color: var(--color-red-destructive);
+}
+.removeButton:hover {
+  color: var(--color-red-destructive-hover);
+}
+.removeButtonSmall { /* Variante plus petite pour options */
+    font-size: 0.9rem;
+    padding: 2px 5px;
+}
+
+
+.optionInputGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.optionInputGroup input[type="text"] { /* L'input texte de l'option */
+  flex-grow: 1;
+}
+.correctOptionRadio {
+  margin-right: 5px; /* Espace entre radio et input texte */
+  width: 18px; /* Taille de la puce radio */
+  height: 18px;
+  flex-shrink: 0; /* Empêcher la puce de rétrécir */
+  cursor: pointer;
+}
+
+.addOptionButton,
+.addQuestionButton {
+  margin-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size-small);
+  padding: 8px 12px;
+  background-color: var(--color-white);
+  color: var(--color-dark-gray);
+  border: 1px solid var(--color-light-gray);
+}
+.addOptionButton:hover,
+.addQuestionButton:hover {
+  background-color: var(--color-bg-gray);
+  border-color: var(--color-medium-gray);
+}
+.addQuestionButton {
+    display: block; /* Pour qu'il prenne toute la largeur disponible après les questions */
+    width: fit-content; /* S'adapte au contenu */
+    margin-left: auto; /* Le pousser à droite si on veut */
+    margin-right: auto;
+    font-size: var(--font-size-normal); /* Plus grand pour ajouter une question */
+    padding: 10px 18px;
+}
+
+/* Responsivité pour le formulaire admin */
+@media (max-width: 768px) {
+  .resourceForm {
+    max-width: 100%;
+    padding: 25px 20px; 
+  }
+  .formRow {
+    flex-direction: column; 
+    gap: 0; 
+  }
+}
+

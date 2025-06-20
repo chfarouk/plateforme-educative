@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-feedback-pvc
+  namespace: plateforme-educative
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi # Petite taille pour un fichier JSON
+  # storageClassName: standard

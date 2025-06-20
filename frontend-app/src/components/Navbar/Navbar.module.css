@@ -1,0 +1,170 @@
+/* src/components/Navbar/Navbar.module.css */
+.navbar {
+  background: var(--color-black); /* Navbar noire */
+  height: 70px; /* Un peu moins haute */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-normal);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Ombre un peu plus visible */
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 24px;
+}
+
+.navLogo {
+  color: var(--color-white);
+  justify-self: flex-start;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.4rem; /* Un peu plus petit */
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+.navLogo:hover {
+  color: var(--color-light-gray); /* Gris clair au survol */
+  text-decoration: none; /* Pas de soulignement pour le logo */
+}
+
+
+.navMenu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  text-align: center;
+}
+
+.navItem {
+  height: 70px;
+  display: flex; 
+  align-items: center;
+}
+
+.navLink {
+  color: var(--color-white);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  height: 100%;
+  display: flex; 
+  align-items: center;
+  transition: color 0.2s ease-out, border-bottom-color 0.2s ease-out;
+  border-bottom: 3px solid transparent; /* Bordure transparente par défaut */
+}
+
+.navLink:hover,
+.navLink.active { /* Si vous ajoutez une classe 'active' pour la route actuelle */
+  color: var(--color-light-gray); 
+  border-bottom-color: var(--color-light-gray); /* Bordure grise au survol */
+  text-decoration: none;
+}
+
+.navButton { /* Pour le bouton Déconnexion */
+  background-color: transparent;
+  border: none;
+  color: var(--color-white);
+  cursor: pointer;
+  font-size: var(--font-size-normal);
+}
+.navButton:hover {
+    color: var(--color-light-gray);
+}
+
+.navButtonPrimary { /* Pour le bouton Inscription */
+  background-color: var(--color-dark-gray); /* Fond gris foncé */
+  padding: 8px 18px !important; 
+  border-radius: var(--border-radius-sm);
+  color: var(--color-white) !important; 
+  border: 1px solid var(--color-dark-gray); /* Bordure de la même couleur */
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.navButtonPrimary:hover {
+  background-color: var(--color-black); /* Devient noir au survol */
+  color: var(--color-white) !important;
+  border-color: var(--color-black);
+}
+
+
+.menuIcon {
+  display: none; 
+}
+
+/* Styles pour le mode mobile */
+@media screen and (max-width: 960px) {
+  .navMenu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 70px); 
+    position: absolute;
+    top: 70px; 
+    left: -100%; 
+    opacity: 1;
+    transition: all 0.4s ease; /* Transition un peu plus douce */
+    background: var(--color-black); 
+    padding-top: 20px; /* Espace en haut du menu mobile */
+  }
+
+  .navMenu.active {
+    left: 0; 
+    opacity: 1;
+  }
+
+  .navLink {
+    text-align: center;
+    padding: 1rem; /* Plus de padding vertical */
+    width: 100%;
+    display: block; /* Pour que le hover prenne toute la largeur */
+    border-bottom: none; /* Pas de bordure pour les liens dans le menu mobile */
+  }
+  .navLink:hover {
+    color: var(--color-light-gray);
+    background-color: var(--color-dark-gray); /* Fond gris foncé au survol */
+    border-bottom: none;
+  }
+
+  .navItem {
+    width: 100%;
+    height: auto; 
+  }
+  
+  .navButtonPrimary, .navButton {
+    width: calc(100% - 40px); /* Ajuster la largeur des boutons */
+    margin: 10px 20px; /* Centrer les boutons et espacer */
+    padding: 12px 20px !important;
+    text-align: center;
+  }
+  .navButtonPrimary {
+      border: 1px solid var(--color-white); /* Bordure blanche pour contraster sur fond noir */
+  }
+  .navButtonPrimary:hover {
+      background-color: var(--color-white);
+      color: var(--color-black) !important;
+      border-color: var(--color-white);
+  }
+
+
+  .menuIcon {
+    display: block; 
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, calc( (70px - 1.8rem * 1.2) / 2 ) ); /* Centrer l'icône verticalement */
+    font-size: 1.8rem;
+    line-height: 1; /* Pour un meilleur contrôle vertical */
+    cursor: pointer;
+    color: var(--color-white);
+    padding: 10px; /* Zone de clic plus grande */
+  }
+}

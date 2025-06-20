@@ -1,0 +1,265 @@
+/* src/pages/DashboardPage.module.css */
+.dashboardPage {
+  padding: 20px;
+}
+
+.statusMessage {
+  text-align: center;
+  font-size: var(--font-size-medium);
+  padding: 40px 0;
+  color: var(--color-medium-gray);
+}
+
+.statusTag {
+  font-size: 0.8em;
+  padding: 4px 10px; /* Cohérent avec ResourceDetailPage */
+  border-radius: var(--border-radius-md); /* Cohérent */
+  color: var(--color-white); /* Couleur de texte par défaut, sera surchargée */
+  font-weight: 600; /* Cohérent */
+  text-transform: uppercase; /* Cohérent */
+  letter-spacing: 0.5px; /* Cohérent */
+  border: 1px solid; /* Cohérent */
+  display: inline-block; /* Cohérent */
+  margin-left: auto; 
+  white-space: nowrap;
+}
+.statusTag.notstarted { /* Utiliser la même logique que ResourceDetailPage */
+  background-color: var(--color-white); 
+  color: var(--color-medium-gray);
+  border-color: var(--color-light-gray);
+} 
+.statusTag.inprogress { 
+  background-color: var(--color-light-gray); 
+  color: var(--color-black);
+  border-color: var(--color-medium-gray);
+} 
+.statusTag.completed { 
+  background-color: var(--color-dark-gray); 
+  color: var(--color-white);
+  border-color: var(--color-black);
+} 
+.statusTag.failed { 
+  background-color: var(--color-red-destructive); 
+  color: var(--color-white);
+  border-color: var(--color-red-destructive-hover);
+} 
+
+.errorMessage {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+  padding: 15px;
+  border-radius: var(--border-radius-sm);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.dashboardHeader {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.dashboardHeader h1 {
+  font-size: var(--font-size-xxl);
+  color: var(--color-black);
+  margin-bottom: 10px;
+}
+
+.dashboardHeader p {
+  font-size: var(--font-size-medium);
+  color: var(--color-medium-gray);
+}
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.dashboardCard { 
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  padding: 25px;
+  box-shadow: var(--box-shadow-medium);
+  display: flex;
+  flex-direction: column; 
+  border: 1px solid var(--color-lighter-gray); /* Bordure pour toutes les cartes */
+}
+
+.dashboardCard h2 {
+  font-size: var(--font-size-xl);
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-lighter-gray); /* Bordure sous le titre plus subtile */
+  padding-bottom: 10px;
+  color: var(--color-black); /* Titres de carte en noir */
+}
+
+/* Styles pour les cartes ADMIN */
+.adminInfoCard, 
+.adminManagementCard {
+  background-color: var(--color-bg-gray); /* Fond gris clair pour admin */
+  border-left: 4px solid var(--color-dark-gray); /* Bordure gauche gris foncé */
+}
+
+
+
+.adminActionList { 
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 15px;
+}
+.adminActionList li {
+  margin-bottom: 10px;
+}
+.adminLink { 
+  display: inline-block;
+  padding: 10px 15px; /* Augmenter un peu le padding pour une meilleure zone de clic */
+  background-color: var(--color-dark-gray); 
+  color: var(--color-white);
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--font-size-normal); /* Assurer une taille de police lisible */
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border: 1px solid var(--color-dark-gray); /* Optionnel: bordure pour définition */
+  text-align: center; /* Si le lien prend toute la largeur du li */
+}
+.adminLink:hover {
+  background-color: var(--color-white); /* Fond blanc au survol */
+  color: var(--color-black);          /* Texte noir au survol */
+  border-color: var(--color-dark-gray); /* Garder une bordure pour la définition */
+  text-decoration: none;
+}
+
+.adminCardDescription {
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  margin-top: auto; 
+}
+
+/* Styles pour la carte info (contenu) */
+.userInfoDetails {
+  margin-bottom: 20px; 
+  flex-grow: 1; 
+}
+.userInfoDetails p {
+  margin-bottom: 10px;
+  font-size: var(--font-size-normal);
+  color: var(--color-medium-gray); /* Texte gris moyen */
+}
+.userInfoDetails p strong {
+  color: var(--color-black); /* Texte strong en noir */
+}
+
+.logoutButton { 
+  background-color: var(--color-red-destructive);
+  color: var(--color-white);
+  border: none;
+  padding: 10px 15px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+  align-self: flex-start; 
+}
+.logoutButton:hover {
+  background-color: var(--color-red-destructive-hover);
+}
+
+
+/* Styles pour la carte Progression Étudiant */
+.progressStats {
+  display: flex;
+  justify-content: space-evenly; 
+  text-align: center;
+  margin-bottom: 25px;
+  gap: 10px; 
+}
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px; 
+}
+.statValue {
+  font-size: 2rem; /* Un peu plus petit */
+  font-weight: bold;
+  color: var(--color-black); /* Valeurs en noir */
+}
+.statLabel {
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  margin-top: 5px;
+}
+
+.actionLink { /* Liens "Explorer plus", "Voir toutes les recommandations" */
+  display: inline-block;
+  margin-top: auto; 
+  color: var(--color-dark-gray); /* Liens en gris foncé */
+  text-decoration: none;
+  font-weight: bold;
+  align-self: flex-start;
+  font-size: var(--font-size-small); /* Un peu plus petit */
+}
+.actionLink:hover {
+  color: var(--color-black);
+  text-decoration: underline;
+}
+
+/* Styles pour la carte Recommandations Étudiant */
+.recommendationsList {
+  list-style: none;
+  padding-left: 0;
+}
+.recommendationsList > li { /* Style pour chaque RecommendationItem */
+  border: 1px solid var(--color-lighter-gray); /* Bordure subtile pour chaque reco */
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 15px !important; 
+  padding: 15px !important; /* Un peu moins de padding */
+  box-shadow: none; /* Enlever l'ombre de RecommendationItem si on la gère par la carte */
+}
+.recommendationsList > li:last-child {
+    margin-bottom: 0 !important;
+}
+.noRecommendationsMessage { 
+  color: var(--color-medium-gray);
+  font-style: italic;
+  text-align: center;
+  padding: 20px 0;
+}
+
+@media (max-width: 992px) { 
+  .dashboardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) { 
+  .dashboardHeader h1 {
+    font-size: var(--font-size-xl);
+  }
+  .dashboardHeader p {
+    font-size: var(--font-size-normal);
+  }
+  .dashboardGrid {
+    grid-template-columns: 1fr; 
+  }
+  .dashboardCard {
+    padding: 20px;
+  }
+  .dashboardCard h2 {
+    font-size: var(--font-size-large);
+  }
+  .statValue {
+    font-size: 1.8rem;
+  }
+  .progressStats {
+    flex-direction: column; 
+    gap: 15px;
+  }
+  .statItem {
+    width: 100%; 
+  }
+}

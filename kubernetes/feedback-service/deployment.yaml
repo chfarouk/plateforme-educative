@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feedback-service
+  namespace: plateforme-educative
+  labels:
+    app: feedback-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feedback-service
+  template:
+    metadata:
+      labels:
+        app: feedback-service
+    spec:
+      containers:
+      - name: feedback-service
+        image: plateforme_educative-feedback-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3005
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: PORT
+          value: "3005"
+        - name: SERVICE_NAME
+          value: "FeedbackServiceK8s"
+        - name: DB_HOST
+          value: "db-feedback-postgres"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: PG_FEEDBACK_SERVICE_DB_NAME
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: PG_FEEDBACK_SERVICE_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: PG_FEEDBACK_SERVICE_PASSWORD
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: JWT_SECRET
+        - name: AI_ENGINE_FEEDBACK_URL # Communication interne K8s
+          value: "http://ai-recommendation-engine:5000/api/ai/feedback"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3005
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3005
+          initialDelaySeconds: 30
+          periodSeconds: 20

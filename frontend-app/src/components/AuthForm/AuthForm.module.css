@@ -1,0 +1,175 @@
+/* src/components/AuthForm/AuthForm.module.css */
+.authFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 150px); /* Hauteur de la Navbar + Footer (70px + 60px) */
+  padding: 20px;
+}
+
+.authForm {
+  background-color: var(--color-white);
+  padding: 30px 40px;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-dark);
+  width: 100%;
+  max-width: 450px; 
+}
+
+.formTitle {
+  text-align: center;
+  font-size: var(--font-size-xl);
+  color: var(--color-black);
+  margin-bottom: 30px; /* Plus d'espace */
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formLabel {
+  display: block;
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.formInput {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--color-lighter-gray); /* Bordure gris clair */
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-normal);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  background-color: var(--color-white); /* Assurer fond blanc pour les inputs */
+  color: var(--color-black); /* Texte noir dans les inputs */
+}
+
+.formInput::placeholder { /* Style pour les placeholders */
+    color: var(--color-light-gray);
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: var(--color-dark-gray); /* Bordure gris foncé au focus */
+  box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25); /* Ombre de focus basée sur gris foncé */
+}
+
+/* Spécifique pour les selects pour une meilleure apparence */
+select.formInput {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px 12px;
+  padding-right: 40px; /* Espace pour la flèche */
+}
+
+.nameGroup {
+  display: flex;
+  gap: 15px; 
+}
+
+.formGroupHalf {
+  flex: 1; 
+}
+
+.errorMessage {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+  padding: 10px 15px;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 20px;
+  font-size: var(--font-size-small);
+  text-align: center;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: var(--color-black); /* Bouton noir */
+  color: var(--color-white);
+  border: 1px solid var(--color-black);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-medium);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitButton:hover {
+  background-color: var(--color-dark-gray); /* Gris foncé au survol */
+  border-color: var(--color-dark-gray);
+}
+
+.submitButton:disabled {
+  background-color: var(--color-light-gray); /* Gris clair pour désactivé */
+  border-color: var(--color-light-gray);
+  color: var(--color-medium-gray);
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--color-white);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.formLinkExtra { /* Pour "Mot de passe oublié ?" */
+  text-align: right;
+  margin-top: -10px; 
+  margin-bottom: 20px;
+  font-size: var(--font-size-small);
+}
+.formLinkExtra a {
+  color: var(--color-medium-gray); /* Lien gris moyen */
+}
+.formLinkExtra a:hover {
+  color: var(--color-black); 
+}
+
+
+.formFooter {
+  text-align: center;
+  margin-top: 25px;
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+}
+
+.formFooter a {
+  color: var(--color-dark-gray); /* Lien gris foncé */
+  font-weight: bold;
+}
+.formFooter a:hover {
+  color: var(--color-black); 
+}
+
+@media (max-width: 500px) {
+  .nameGroup {
+    flex-direction: column; 
+    gap: 0; 
+  }
+  .authForm {
+    padding: 25px 20px; /* Ajuster padding */
+    box-shadow: var(--box-shadow-medium); /* Ombre un peu moins forte */
+  }
+  .formTitle {
+    font-size: var(--font-size-large);
+  }
+}

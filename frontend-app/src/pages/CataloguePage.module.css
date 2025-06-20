@@ -1,0 +1,261 @@
+/* src/pages/CataloguePage.module.css */
+/* Styles hérités de index.css pour la palette (--color-..., --font-size-...) */
+
+.cataloguePage {
+  padding: 25px; /* Un peu plus de padding global */
+}
+
+.pageHeader { /* Nouveau conteneur pour titre et sous-titre */
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.pageTitle {
+  font-size: var(--font-size-hero); /* Titre plus grand */
+  color: var(--color-black);
+  margin-bottom: 10px;
+}
+
+.pageSubtitle {
+  font-size: var(--font-size-large);
+  color: var(--color-medium-gray);
+  max-width: 700px;
+  margin: 0 auto; /* Centrer le sous-titre */
+}
+
+
+.loadingMessage,
+.noResourcesMessage {
+  text-align: center;
+  font-size: var(--font-size-medium);
+  margin-top: 50px; /* Plus d'espace */
+  color: var(--color-medium-gray);
+  padding: 20px;
+}
+.errorMessage { 
+  text-align: center;
+  margin-top: 40px;
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+  padding: 15px;
+  border-radius: var(--border-radius-sm);
+  max-width: 700px; /* Limiter la largeur du message d'erreur */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Filtres */
+.filters {
+  display: flex;
+  justify-content: center; /* Centrer les filtres */
+  align-items: center;
+  margin-bottom: 40px; /* Plus d'espace sous les filtres */
+  gap: 20px; /* Plus d'espace entre les filtres */
+  flex-wrap: wrap; 
+  padding: 15px;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-light);
+  border: 1px solid var(--color-lighter-gray);
+}
+
+.searchInput,
+.filterSelect {
+  padding: 12px 18px; /* Champs plus grands */
+  border: 1px solid var(--color-light-gray); /* Bordure plus claire */
+  border-radius: var(--border-radius-md); /* Coins plus arrondis */
+  font-size: var(--font-size-normal);
+  background-color: var(--color-white);
+  color: var(--color-black);
+  outline: none;
+}
+.searchInput::placeholder {
+    color: var(--color-medium-gray);
+}
+.searchInput:focus,
+.filterSelect:focus {
+  border-color: var(--color-dark-gray);
+  box-shadow: 0 0 0 0.15rem rgba(52, 58, 64, 0.2); /* Ombre de focus plus subtile */
+}
+select.filterSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23343a40' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E"); /* Flèche plus foncée */
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px 12px;
+  padding-right: 40px;
+}
+
+.searchInput {
+  min-width: 280px; 
+  flex-grow: 1; 
+  max-width: 450px;
+}
+
+.filterSelect {
+  min-width: 200px; /* Un peu plus large */
+}
+
+/* Grille de Ressources */
+.resourcesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  gap: 30px; /* Plus d'espace entre les cartes */
+}
+
+/* Carte de Ressource */
+.cardLink {
+  text-decoration: none;
+  color: inherit; 
+  display: block; 
+  height: 100%;
+  border-radius: var(--border-radius-lg); /* Appliquer le radius au lien pour le focus */
+  transition: box-shadow 0.3s ease;
+}
+.cardLink:focus-visible { /* Style de focus pour l'accessibilité */
+    outline: 2px solid var(--color-dark-gray);
+    outline-offset: 2px;
+}
+.cardLink:hover .resourceCard { /* Appliquer l'effet de survol sur la carte via le lien */
+  transform: translateY(-6px);
+  box-shadow: var(--box-shadow-dark); /* Ombre plus prononcée au survol */
+  border-color: var(--color-medium-gray);
+}
+
+
+.resourceCard {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-lg); /* Coins bien arrondis */
+  box-shadow: var(--box-shadow-medium);
+  overflow: hidden; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column; 
+  height: 100%; 
+  border: 1px solid var(--color-lighter-gray); 
+}
+
+.cardHeader { /* Nouveau conteneur pour icône et titre */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 20px 10px; /* Padding ajusté */
+  border-bottom: 1px solid var(--color-lighter-gray);
+}
+.cardIcon {
+  font-size: 1.5rem; /* Taille des icônes dans les cartes */
+  color: var(--color-dark-gray);
+  flex-shrink: 0; /* Empêcher l'icône de rétrécir */
+}
+
+.cardContent {
+  padding: 15px 20px 20px; /* Padding ajusté */
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-size: var(--font-size-large);
+  margin-top: 0;
+  margin-bottom: 0; /* Géré par le gap du header */
+  color: var(--color-black); 
+  line-height: 1.3; /* Pour les titres sur plusieurs lignes */
+}
+
+.cardDescription {
+  font-size: var(--font-size-small); 
+  color: var(--color-medium-gray);
+  line-height: 1.5;
+  margin-top: 10px; /* Espace après le titre/statut */
+  margin-bottom: 15px;
+  flex-grow: 1; 
+  /* Limiter le nombre de lignes (optionnel, avec JS ou CSS plus complexe) */
+  /* display: -webkit-box; 
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;  
+  overflow: hidden; */
+}
+
+.cardStatus {
+  font-size: 0.75rem; 
+  padding: 4px 10px; /* Cohérent */
+  border-radius: var(--border-radius-md); /* Cohérent */
+  margin-top: 8px; 
+  margin-bottom: 10px;
+  align-self: flex-start; 
+  font-weight: 600; /* Cohérent */
+  text-transform: uppercase; /* Cohérent */
+  letter-spacing: 0.5px; /* Cohérent */
+  border: 1px solid; /* Cohérent */
+  display: inline-block; /* Cohérent */
+}
+
+.statusCompleted { /* Sera appliqué en plus de .cardStatus */
+  background-color: var(--color-dark-gray); 
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+.statusInProgress { /* Sera appliqué en plus de .cardStatus */
+  background-color: var(--color-light-gray); 
+  color: var(--color-black);
+  border-color: var(--color-medium-gray);
+}
+
+.cardMeta {
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  border-top: 1px solid var(--color-lighter-gray);
+  padding-top: 15px; /* Plus d'espace */
+  margin-top: auto; 
+}
+.cardMeta span {
+  display: block; 
+  margin-bottom: 5px;
+}
+.cardMeta span strong {
+    color: var(--color-dark-gray);
+}
+.cardMeta span:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .resourcesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px; /* Moins d'espace entre les cartes sur mobile */
+  }
+  .cardTitle {
+    font-size: var(--font-size-medium); 
+  }
+}
+
+@media (max-width: 480px) {
+  .cataloguePage { padding: 15px; }
+  .pageHeader { margin-bottom: 25px; }
+  .pageTitle { font-size: var(--font-size-xl); }
+  .pageSubtitle { font-size: var(--font-size-normal); }
+
+  .filters {
+    flex-direction: column; 
+    align-items: stretch; 
+    background-color: transparent; /* Pas de fond pour les filtres sur mobile */
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 25px;
+  }
+  .searchInput,
+  .filterSelect {
+    width: 100%;
+    max-width: none;
+    padding: 12px; /* Padding cohérent */
+  }
+   .resourcesGrid {
+    grid-template-columns: 1fr; 
+  }
+}

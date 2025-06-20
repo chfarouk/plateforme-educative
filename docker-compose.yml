@@ -1,0 +1,260 @@
+version: '3.8' # Bien que la version soit obsolète, on la garde si vous n'avez pas mis à jour Docker Compose
+
+services:
+  # --- Services Applicatifs ---
+  user-service:
+    build: ./user-service
+    container_name: user_service_app
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - SERVICE_NAME=UserService 
+      - DB_USER=${PG_USER_SERVICE_USER}
+      - DB_HOST=db_users_postgres 
+      - DB_DATABASE=${PG_USER_SERVICE_DB}
+      - DB_PASSWORD=${PG_USER_SERVICE_PASSWORD}
+      - DB_PORT=5432
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      db_users_postgres:
+        condition: service_healthy
+    volumes:
+      - ./user-service/src:/usr/src/app/src 
+    restart: unless-stopped
+
+  content-service:
+    build: ./content-service
+    container_name: content_service_app
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - SERVICE_NAME=ContentService
+      - DB_USER=${PG_CONTENT_SERVICE_USER}
+      - DB_HOST=db_content_postgres
+      - DB_DATABASE=${PG_CONTENT_SERVICE_DB}
+      - DB_PASSWORD=${PG_CONTENT_SERVICE_PASSWORD}
+      - DB_PORT=5432
+      - MONGO_URI=mongodb://mongo_details_db:27017/${MONGO_DETAILS_DB_NAME} # Utilise la variable pour le nom de la BDD Mongo
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      db_content_postgres:
+        condition: service_healthy
+      mongo_details_db:
+        condition: service_started 
+    volumes:
+      - ./content-service/src:/usr/src/app/src
+    restart: unless-stopped
+
+  progress-service:
+    build: ./progress-service
+    container_name: progress_service_app
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+      - SERVICE_NAME=ProgressService
+      - DB_USER=${PG_PROGRESS_SERVICE_USER}
+      - DB_HOST=db_progress_postgres
+      - DB_DATABASE=${PG_PROGRESS_SERVICE_DB}
+      - DB_PASSWORD=${PG_PROGRESS_SERVICE_PASSWORD}
+      - DB_PORT=5432
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      db_progress_postgres:
+        condition: service_healthy
+    volumes:
+      - ./progress-service/src:/usr/src/app/src
+    restart: unless-stopped
+
+  feedback-service:
+    build: ./feedback-service
+    container_name: feedback_service_app
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=development
+      - PORT=3005
+      - SERVICE_NAME=FeedbackService
+      - DB_USER=${PG_FEEDBACK_SERVICE_USER}
+      - DB_HOST=db_feedback_postgres
+      - DB_DATABASE=${PG_FEEDBACK_SERVICE_DB}
+      - DB_PASSWORD=${PG_FEEDBACK_SERVICE_PASSWORD}
+      - DB_PORT=5432
+      - JWT_SECRET=${JWT_SECRET}
+      - AI_ENGINE_FEEDBACK_URL=${AI_ENGINE_FEEDBACK_INTERNAL_URL} # Utilise la variable du .env global
+    depends_on:
+      db_feedback_postgres:
+        condition: service_healthy
+      ai-recommendation-engine: 
+        condition: service_started 
+    volumes:
+      - ./feedback-service/src:/usr/src/app/src
+    restart: unless-stopped
+      
+  recommendation-service-nodejs: 
+    build: ./recommendation-service
+    container_name: recommendation_service_node_app
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+      - PORT=3004
+      - SERVICE_NAME=RecommendationNodeService
+      - DB_USER=${PG_RECO_SERVICE_USER}
+      - DB_HOST=db_reco_postgres
+      - DB_DATABASE=${PG_RECO_SERVICE_DB}
+      - DB_PASSWORD=${PG_RECO_SERVICE_PASSWORD}
+      - DB_PORT=5432
+      - JWT_SECRET=${JWT_SECRET}
+      - CONTENT_SERVICE_URL=${CONTENT_SERVICE_INTERNAL_URL}
+      - PROGRESS_SERVICE_URL=${PROGRESS_SERVICE_INTERNAL_URL}
+      - AI_ENGINE_URL=${AI_ENGINE_INTERNAL_URL} 
+      - AI_ENGINE_FEEDBACK_URL=${AI_ENGINE_FEEDBACK_INTERNAL_URL}
+    depends_on:
+      db_reco_postgres:
+        condition: service_healthy
+      content-service:
+        condition: service_started 
+      progress-service:
+        condition: service_started
+      ai-recommendation-engine:
+        condition: service_started 
+    volumes:
+      - ./recommendation-service/src:/usr/src/app/src
+    restart: unless-stopped
+
+  ai-recommendation-engine: 
+    build: ./ai-recommendation-engine
+    container_name: ai_recommendation_engine_py_app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=run.py 
+      - FLASK_ENV=development # FLASK_DEBUG est géré par FLASK_ENV=development
+      - RECOMMENDER_PORT=5000
+      - CONTENT_SERVICE_URL_FOR_AI=${CONTENT_SERVICE_INTERNAL_URL} 
+    depends_on:
+      content-service: 
+        condition: service_started
+    volumes: 
+      - ./ai-recommendation-engine/app:/app/app 
+      - ./ai-recommendation-engine/run.py:/app/run.py
+      - ./ai-recommendation-engine/.env:/app/.env # Monter le .env du service IA pour qu'il le lise
+      - ai_feedback_data_volume:/app/user_negative_feedback.json 
+    restart: unless-stopped
+
+  # --- Bases de Données ---
+  db_users_postgres:
+    image: postgres:14-alpine
+    container_name: db_users_postgres_container
+    environment:
+      - POSTGRES_USER=${PG_USER_SERVICE_USER}
+      - POSTGRES_PASSWORD=${PG_USER_SERVICE_PASSWORD}
+      - POSTGRES_DB=${PG_USER_SERVICE_DB}
+    ports: 
+      - "5432:5432" 
+    volumes:
+      - pg_users_data_volume:/var/lib/postgresql/data 
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  db_content_postgres:
+    image: postgres:14-alpine
+    container_name: db_content_postgres_container
+    environment:
+      - POSTGRES_USER=${PG_CONTENT_SERVICE_USER}
+      - POSTGRES_PASSWORD=${PG_CONTENT_SERVICE_PASSWORD}
+      - POSTGRES_DB=${PG_CONTENT_SERVICE_DB}
+    ports:
+      - "5433:5432" 
+    volumes:
+      - pg_content_data_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  db_progress_postgres:
+    image: postgres:14-alpine
+    container_name: db_progress_postgres_container
+    environment:
+      - POSTGRES_USER=${PG_PROGRESS_SERVICE_USER}
+      - POSTGRES_PASSWORD=${PG_PROGRESS_SERVICE_PASSWORD}
+      - POSTGRES_DB=${PG_PROGRESS_SERVICE_DB}
+    ports:
+      - "5434:5432"
+    volumes:
+      - pg_progress_data_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  db_feedback_postgres:
+    image: postgres:14-alpine
+    container_name: db_feedback_postgres_container
+    environment:
+      - POSTGRES_USER=${PG_FEEDBACK_SERVICE_USER}
+      - POSTGRES_PASSWORD=${PG_FEEDBACK_SERVICE_PASSWORD}
+      - POSTGRES_DB=${PG_FEEDBACK_SERVICE_DB}
+    ports:
+      - "5435:5432"
+    volumes:
+      - pg_feedback_data_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  db_reco_postgres: 
+    image: postgres:14-alpine
+    container_name: db_reco_postgres_container
+    environment:
+      - POSTGRES_USER=${PG_RECO_SERVICE_USER}
+      - POSTGRES_PASSWORD=${PG_RECO_SERVICE_PASSWORD}
+      - POSTGRES_DB=${PG_RECO_SERVICE_DB}
+    ports:
+      - "5436:5432"
+    volumes:
+      - pg_reco_data_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  mongo_details_db: 
+    image: mongo:6 
+    container_name: mongo_details_db_container
+    environment: # Optionnel: si vous voulez nommer la base de données différemment de 'test' au démarrage
+        - MONGO_INITDB_DATABASE=${MONGO_DETAILS_DB_NAME}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_details_data_volume:/data/db 
+    restart: unless-stopped
+
+volumes: 
+  pg_users_data_volume:
+  pg_content_data_volume:
+  pg_progress_data_volume:
+  pg_feedback_data_volume:
+  pg_reco_data_volume:
+  mongo_details_data_volume:
+  ai_feedback_data_volume: # Renommé pour cohérence

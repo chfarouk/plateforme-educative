@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-config
+  namespace: plateforme-educative
+data:
+  MONGO_DETAILS_DB_NAME: "ressources_details_db"

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-users-postgres 
+  namespace: plateforme-educative
+  labels:
+    app: db-users-postgres
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: db-users-postgres
+  type: ClusterIP 

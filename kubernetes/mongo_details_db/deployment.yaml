@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-details-db
+  namespace: plateforme-educative
+  labels:
+    app: mongo-details-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-details-db
+  template:
+    metadata:
+      labels:
+        app: mongo-details-db
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:6
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_DATABASE 
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config
+              key: MONGO_DETAILS_DB_NAME
+        volumeMounts:
+        - name: mongodata-details
+          mountPath: /data/db
+        readinessProbe: # Simple check, MongoDB peut prendre du temps à être pleinement opérationnel
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 15
+          periodSeconds: 20
+      volumes:
+      - name: mongodata-details
+        persistentVolumeClaim:
+          claimName: mongo-details-db-pvc

@@ -1,0 +1,68 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: plateforme-educative-ingress
+  namespace: plateforme-educative # Assurez-vous que c'est le bon namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2 # Important pour que les chemins soient correctement transmis aux services
+    # Pour certaines versions plus récentes de Nginx Ingress, rewrite-target peut ne plus être nécessaire
+    # ou la syntaxe peut être légèrement différente si vous utilisez des regex plus complexes.
+    # nginx.ingress.kubernetes.io/use-regex: "true" # Peut être nécessaire si vous utilisez des captures de groupe complexes dans path
+    nginx.ingress.kubernetes.io/enable-cors: "true" # Activer CORS au niveau de l'Ingress
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:5173, http://127.0.0.1:5173" # Origines autorisées
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, PUT, POST, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization, Content-Type"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+spec:
+  ingressClassName: nginx # Nom de l'IngressClass, souvent 'nginx' avec l'addon Minikube
+  rules:
+  - host: plateforme.local # Le nom d'hôte que nous allons utiliser pour accéder à l'application
+    http:
+      paths:
+      - path: /api/users(/|$)(.*) # Chemin pour le user-service
+        pathType: ImplementationSpecific # Ou Prefix si votre Ingress controller le préfère pour ce type de path
+        backend:
+          service:
+            name: user-service # Nom du Service Kubernetes pour user-service
+            port:
+              number: 3001 # Port du Service Kubernetes pour user-service
+      - path: /api/content(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: content-service
+            port:
+              number: 3002
+      - path: /api/progress(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: progress-service
+            port:
+              number: 3003
+      - path: /api/recommendations(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: recommendation-service-nodejs # Le service Node.js
+            port:
+              number: 3004
+      - path: /api/feedback(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: feedback-service
+            port:
+              number: 3005
+      - path: /api/ai(/|$)(.*) # Pour le moteur IA Python
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ai-recommendation-engine
+            port:
+              number: 5000
+  # Optionnel: Configuration TLS pour HTTPS (plus avancé, nécessite un certificat)
+  # tls:
+  # - hosts:
+  #   - plateforme.local
+  #   secretName: plateforme-tls-secret # Nom d'un Secret K8s contenant le certificat et la clé TLS

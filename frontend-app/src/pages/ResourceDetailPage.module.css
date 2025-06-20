@@ -1,0 +1,794 @@
+/* src/pages/ResourceDetailPage.module.css */
+.resourceDetailPage {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.statusMessage {
+  text-align: center;
+  font-size: var(--font-size-medium);
+  padding: 40px 0;
+  color: var(--color-medium-gray);
+}
+
+.errorMessage {
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+  border: 1px solid var(--color-error-border);
+  padding: 15px;
+  border-radius: var(--border-radius-sm);
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 25px;
+  color: var(--color-dark-gray); 
+  text-decoration: none;
+  font-size: var(--font-size-normal);
+  font-weight: 500;
+  padding: 8px 0; /* Un peu de padding pour la zone de clic */
+}
+.backLink:hover {
+  color: var(--color-black);
+  text-decoration: underline;
+}
+
+.resourceContentCard { /* Remplacer .resourceContent par ceci pour plus de clarté */
+  background-color: var(--color-white);
+  padding: 30px 35px;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-medium);
+  border: 1px solid var(--color-lighter-gray);
+}
+
+.resourceHeader h1 {
+  font-size: 2.2rem; 
+  color: var(--color-black);
+  margin-top: 0;
+  margin-bottom: 10px; /* Réduire un peu */
+  line-height: 1.3;
+}
+.titleWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.headerIcon {
+  font-size: 2rem; /* Taille pour les icônes de titre */
+  color: var(--color-dark-gray); /* Couleur des icônes de titre */
+}
+
+.metaInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 25px;
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  margin-bottom: 10px; /* Réduire */
+  padding-bottom: 10px; /* Réduire */
+  border-bottom: 1px solid var(--color-lighter-gray);
+}
+.metaInfo span strong {
+  color: var(--color-dark-gray);
+}
+
+.creationDate {
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  margin-bottom: 25px;
+}
+
+.sectionBlock { /* Conteneur pour chaque section principale (Description, Progression, Contenu) */
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-lighter-gray);
+}
+.sectionBlock:first-of-type { /* La première section (Description) n'a pas de bordure/padding en haut */
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-black); 
+  margin-top: 0; /* Géré par .sectionBlock */
+  margin-bottom: 20px; /* Plus d'espace après le titre de section */
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-dark-gray); 
+  display: inline-block; 
+}
+
+.descriptionText { 
+  line-height: 1.7;
+  color: var(--color-dark-gray); 
+  font-size: var(--font-size-normal);
+}
+
+/* Section de Progression */
+.progressSection {
+  margin-top: 25px; /* Ajusté pour être à l'intérieur d'un .sectionBlock */
+  padding: 25px;
+  background-color: var(--color-bg-gray); 
+  border: 1px solid var(--color-lighter-gray);
+  border-radius: var(--border-radius-md);
+}
+.progressSection .sectionTitle { 
+    font-size: var(--font-size-large); 
+    border-bottom-color: var(--color-medium-gray); 
+    color: var(--color-dark-gray);
+    margin-top: 0; /* Le titre est déjà dans la section */
+}
+
+.progressStatus {
+  font-size: var(--font-size-normal);
+  margin-bottom: 10px;
+  display: flex; /* Pour aligner statut et tag */
+  align-items: center;
+  gap: 10px;
+}
+.progressStatus strong {
+  text-transform: capitalize;
+  color: var(--color-black);
+  margin-right: 10px; /* Espace avant le tag */
+}
+
+.statusTag { /* Style de base pour le tag de statut dans la progression */
+  font-size: 0.8em;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-md); /* Un peu plus arrondi */
+  font-weight: 600; /* Plus lisible */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid; /* Bordure par défaut */
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.statusTag.not_started, .statusTag.notstarted { 
+  background-color: var(--color-white); 
+  color: var(--color-medium-gray);
+  border-color: var(--color-light-gray);
+} 
+.statusTag.in_progress, .statusTag.inprogress { 
+  background-color: var(--color-light-gray); 
+  color: var(--color-black);
+  border-color: var(--color-medium-gray);
+} 
+.statusTag.completed { 
+  background-color: var(--color-dark-gray); 
+  color: var(--color-white);
+  border-color: var(--color-black);
+} 
+.statusTag.failed { /* Garde le rouge car c'est un état d'alerte */
+  background-color: var(--color-red-destructive); 
+  color: var(--color-white);
+  border-color: var(--color-red-destructive-hover);
+} 
+
+.score {
+  font-weight: bold;
+  color: var(--color-dark-gray); 
+}
+.completionDate {
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  margin-bottom: 20px;
+}
+
+.progressActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 15px; /* Espace au-dessus des boutons */
+}
+
+.actionButton,
+.actionButtonSecondary,
+.actionButtonTertiary {
+  padding: 10px 18px;
+  border: 1px solid var(--color-dark-gray); 
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: var(--font-size-normal);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: var(--box-shadow-light);
+  background-color: var(--color-white); 
+  color: var(--color-black); 
+}
+/* ... (styles pour :disabled, :active, :hover des boutons restent comme avant avec les couleurs monochromes) ... */
+.actionButton:hover:not(:disabled) { 
+  background-color: var(--color-dark-gray); 
+  color: var(--color-white);
+}
+.actionButtonSecondary:hover:not(:disabled) { 
+  background-color: var(--color-medium-gray); 
+  color: var(--color-white);
+  border-color: var(--color-medium-gray);
+}
+.actionButtonTertiary:hover:not(:disabled) { 
+  background-color: var(--color-light-gray); 
+  color: var(--color-black);
+  border-color: var(--color-light-gray);
+}
+
+
+.adminNotice, .loginNotice {
+  margin-top: 25px;
+  padding: 12px 18px;
+  background-color: var(--color-bg-gray);
+  border-left: 4px solid var(--color-medium-gray); 
+  font-size: var(--font-size-small);
+  color: var(--color-dark-gray);
+}
+.loginNotice a { font-weight: bold; color: var(--color-black); }
+
+.resourceSpecificContentSection { 
+    margin-top: 0; /* Géré par .sectionBlock */
+    padding-top: 0; /* Géré par .sectionBlock */
+    border-top: none; /* Géré par .sectionBlock */
+}
+.resourceSpecificContentSection .sectionTitle {
+    font-size: var(--font-size-large);
+    border-bottom-color: var(--color-medium-gray);
+    color: var(--color-dark-gray);
+    margin-top: 0; /* Le titre est déjà dans la section */
+}
+
+.contentTypeMissing { 
+    color: var(--color-medium-gray);
+    font-style: italic;
+    padding: 15px;
+    background-color: var(--color-bg-gray);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    border: 1px dashed var(--color-light-gray);
+}
+ 
+.videoPlayerWrapper {
+  position: relative;
+  padding-top: 56.25%; 
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background: var(--color-black); 
+  margin-bottom: 10px; 
+  border-radius: var(--border-radius-md); 
+  border: 1px solid var(--color-black); /* Bordure noire pour le lecteur */
+}
+.reactPlayer { 
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* width et height 100% sont gérés par ReactPlayer lui-même quand on lui passe les props */
+}
+.videoMeta { 
+    font-size: var(--font-size-small);
+    color: var(--color-medium-gray);
+    margin-top: 10px; /* Espace après le lecteur */
+}
+
+.readTime {
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+  margin-bottom: 15px;
+  font-style: italic;
+}
+.articleText {
+  line-height: 1.8;
+  font-size: var(--font-size-normal);
+  color: var(--color-dark-gray);
+}
+.articleText p {
+  margin-bottom: 1em; 
+}
+.articleText p:last-child {
+  margin-bottom: 0;
+}
+
+.exerciseInstructions {
+    font-size: var(--font-size-normal);
+    margin-bottom: 20px;
+    padding: 15px; /* Plus de padding */
+    background-color: var(--color-bg-gray);
+    border-left: 4px solid var(--color-dark-gray); /* Bordure plus visible */
+    border-radius: var(--border-radius-sm);
+    color: var(--color-dark-gray);
+}
+.exerciseQuestion {
+    margin-bottom: 25px;
+    padding: 20px; /* Plus de padding */
+    border: 1px solid var(--color-lighter-gray);
+    border-radius: var(--border-radius-md); /* Coins plus arrondis */
+    background-color: var(--color-white); /* Fond blanc pour la question */
+}
+.questionText { /* Classe pour le texte de la question */
+    margin-bottom: 15px; /* Espace sous le texte de la question */
+    font-size: 1.05rem;
+}
+.questionText strong {
+    color: var(--color-black);
+}
+.exerciseOptions {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+.optionItem { /* Style pour chaque <li> d'option */
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-lighter-gray);
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease;
+}
+.optionItem:hover {
+    background-color: var(--color-bg-gray);
+}
+.optionItem label {
+    display: flex; 
+    align-items: center;
+    cursor: pointer;
+    font-size: var(--font-size-normal);
+    color: var(--color-dark-gray);
+    width: 100%; /* Pour que toute la zone soit cliquable */
+}
+.optionRadio { /* Style pour la puce radio */
+    margin-right: 12px;
+    flex-shrink: 0; /* Empêcher la puce de rétrécir */
+    /* Styles custom pour les radio buttons (apparence) */
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--color-white);
+    border: 2px solid var(--color-medium-gray);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative; /* Pour le point intérieur */
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.optionRadio:checked {
+  border-color: var(--color-black);
+}
+.optionRadio:checked::before {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-black);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.optionRadio:hover {
+    border-color: var(--color-dark-gray);
+}
+.optionText { /* Pour le texte de l'option */
+    flex-grow: 1;
+}
+
+.exerciseInteractive {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--color-white); 
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--border-radius-md);
+}
+
+.submitExerciseButton { 
+  margin-top: 25px;
+  /* Utilise déjà .actionButton, mais on peut surcharger si besoin */
+}
+
+/* Styles pour l'affichage des résultats de l'exercice */
+.exerciseResults {
+    margin-top: 30px; /* Plus d'espace pour la section résultats */
+    padding: 25px;
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--border-radius-md);
+    background-color: var(--color-bg-gray); /* Fond léger pour la section résultats */
+}
+.exerciseResults h3 { /* Titre de la section résultats */
+    font-size: var(--font-size-large);
+    color: var(--color-black);
+    margin-bottom: 20px; /* Plus d'espace */
+    text-align: center;
+}
+.finalScore {
+    font-size: var(--font-size-xl); /* Score plus grand */
+    font-weight: bold;
+    color: var(--color-black);
+    text-align: center;
+    margin-bottom: 30px; /* Plus d'espace */
+    padding: 15px;
+    background-color: var(--color-white); /* Fond blanc pour le score */
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-lighter-gray);
+}
+
+/* Styles pour les questions DANS la section des résultats */
+.exerciseResults .exerciseQuestion {
+    background-color: var(--color-white); /* Fond blanc pour chaque question dans les résultats */
+    margin-bottom: 20px; /* Espace entre les questions corrigées */
+}
+
+.correctAnswerHighlight { 
+  border-left: 4px solid var(--color-dark-gray); 
+}
+.incorrectAnswerHighlight { 
+  border-left: 4px solid var(--color-red-destructive);
+}
+
+.exerciseResults .optionItem { /* Options dans la section des résultats */
+    background-color: transparent; /* Enlever le fond hover des options */
+    cursor: default; /* Pas cliquable */
+    border-color: transparent; /* Enlever la bordure par défaut */
+}
+.exerciseResults .optionItem:hover { /* Pas d'effet de survol dans les résultats */
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.correctOptionHighlight { /* Pour surligner l'option correcte dans les résultats */
+  /* background-color: #d4edda; */ /* Pas de fond, on utilise l'icône */
+  font-weight: bold; 
+  /* color: var(--color-black); */ /* Texte en noir pour la bonne réponse */
+}
+.selectedIncorrectOption { 
+  background-color: #f8d7da; 
+  color: var(--color-red-destructive); 
+  text-decoration: line-through;
+}
+
+.optionFeedbackIcon { /* Style pour les icônes FaCheckCircle / FaTimesCircle */
+    margin-right: 8px;
+    font-size: 1.1em; /* Ajuster la taille de l'icône */
+    vertical-align: middle;
+}
+.iconCorrectResult {
+    color: var(--color-dark-gray); /* Noir pour la bonne réponse */
+}
+.iconIncorrectResult {
+    color: var(--color-red-destructive);
+}
+.iconCorrectHidden { /* Pour la bonne réponse non sélectionnée par l'utilisateur */
+    color: var(--color-light-gray); /* Moins visible, mais indique la bonne réponse */
+    opacity: 0.7;
+}
+
+
+.questionExplanation {
+    font-size: var(--font-size-small);
+    color: var(--color-medium-gray);
+    margin-top: 15px; /* Espace au-dessus de l'explication */
+    padding: 10px;
+    background-color: var(--color-bg-gray);
+    border-radius: var(--border-radius-sm);
+    border-top: 1px dashed var(--color-light-gray); /* Séparateur subtil */
+}
+
+.startExercisePrompt {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--color-bg-gray);
+    border: 1px dashed var(--color-medium-gray);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    color: var(--color-dark-gray);
+    font-style: italic;
+}
+
+.ratingDisplay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px; /* Espace avant la date de création */
+  font-size: var(--font-size-small);
+}
+.ratingText {
+  color: var(--color-medium-gray);
+}
+
+/* Système d'étoiles de notation */
+.starRating {
+  display: inline-flex; /* Pour que les étoiles soient sur la même ligne */
+  align-items: center;
+}
+.star {
+  cursor: pointer;
+  color: var(--color-light-gray); /* Couleur par défaut des étoiles vides */
+  font-size: 1.3rem; /* Taille des étoiles */
+  margin-right: 3px;
+  transition: color 0.2s ease;
+}
+.star.filledStar {
+  color: var(--color-black); /* Étoiles remplies en noir */
+}
+.star:hover:not(.disabledStar) {
+  color: var(--color-dark-gray); /* Survol en gris foncé */
+}
+.star.disabledStar {
+  cursor: default;
+  opacity: 0.7;
+}
+
+
+/* Section Feedback (Notes et Commentaires) */
+.feedbackSection {
+  margin-top: 35px;
+  padding-top: 25px;
+  border-top: 1px solid var(--color-lighter-gray);
+}
+.feedbackSection .sectionTitle { /* S'assurer que le titre de section est stylé */
+    font-size: var(--font-size-xl);
+    color: var(--color-black); 
+    margin-top: 0; 
+    margin-bottom: 25px; /* Plus d'espace */
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-dark-gray); 
+    display: inline-block; 
+}
+
+.userRatingSection {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: var(--color-bg-gray);
+  border-radius: var(--border-radius-md);
+}
+.userRatingSection h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: var(--font-size-medium);
+  color: var(--color-dark-gray);
+}
+.userRatingSection small {
+  display: block;
+  margin-top: 5px;
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+}
+
+.loginToInteract {
+    font-style: italic;
+    color: var(--color-medium-gray);
+    margin-bottom: 20px;
+}
+.loginToInteract a {
+    color: var(--color-black);
+    font-weight: bold;
+}
+
+
+.commentsSection {
+  margin-top: 30px;
+}
+.commentsSection h4 {
+  font-size: var(--font-size-large);
+  color: var(--color-dark-gray);
+  margin-bottom: 20px;
+}
+
+.commentForm {
+  margin-bottom: 25px;
+}
+.commentTextarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--color-lighter-gray);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-normal);
+  min-height: 80px;
+  resize: vertical;
+  margin-bottom: 10px;
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+.commentTextarea:focus {
+  outline: none;
+  border-color: var(--color-dark-gray);
+  box-shadow: 0 0 0 0.15rem rgba(52, 58, 64, 0.2);
+}
+
+.commentSubmitButton {
+  padding: 10px 20px;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border: 1px solid var(--color-black);
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.commentSubmitButton:hover:not(:disabled) {
+  background-color: var(--color-dark-gray);
+}
+.commentSubmitButton:disabled {
+  background-color: var(--color-light-gray);
+  color: var(--color-medium-gray);
+  border-color: var(--color-light-gray);
+  cursor: not-allowed;
+}
+
+.editActions { /* Pour les boutons Enregistrer/Annuler de l'édition de commentaire */
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.commentCancelButton {
+    padding: 10px 20px;
+    background-color: var(--color-white);
+    color: var(--color-dark-gray);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.commentCancelButton:hover {
+    background-color: var(--color-bg-gray);
+}
+
+
+.commentsList {
+  list-style: none;
+  padding-left: 0;
+}
+.commentItem {
+  background-color: var(--color-white);
+  padding: 15px;
+  border: 1px solid var(--color-lighter-gray);
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 15px;
+}
+.commentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.commentAuthor {
+  font-weight: bold;
+  color: var(--color-black);
+  font-size: var(--font-size-normal);
+}
+.commentDate {
+  font-size: var(--font-size-small);
+  color: var(--color-medium-gray);
+}
+.commentText {
+  font-size: var(--font-size-normal);
+  color: var(--color-dark-gray);
+  line-height: 1.6;
+  white-space: pre-wrap; /* Conserver les retours à la ligne du commentaire */
+  word-break: break-word; /* Pour les longs mots/liens */
+}
+.commentActions {
+    margin-top: 10px;
+    text-align: right;
+}
+.commentActionButton {
+    background: none;
+    border: none;
+    color: var(--color-medium-gray);
+    cursor: pointer;
+    margin-left: 15px;
+    font-size: var(--font-size-small);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.commentActionButton:hover {
+    color: var(--color-black);
+}
+.commentActionButton.deleteAction:hover {
+    color: var(--color-red-destructive);
+}
+
+.noComments {
+  color: var(--color-medium-gray);
+  font-style: italic;
+  text-align: center;
+  padding: 20px 0;
+}
+.loadMoreButton {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: var(--color-white);
+    color: var(--color-dark-gray);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.loadMoreButton:hover:not(:disabled) {
+    background-color: var(--color-bg-gray);
+}
+.loadMoreButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.starRating {
+  display: inline-flex; 
+  align-items: center;
+}
+.star {
+  cursor: pointer;
+  color: var(--color-light-gray); /* Étoiles vides par défaut */
+  margin-right: 2px; /* Petit espace entre les étoiles */
+  transition: color 0.2s ease;
+}
+.star.filledStar {
+  color: var(--color-black); /* Étoiles remplies en noir */
+}
+.star:hover:not(.disabledStar) { /* Survol pour les étoiles non désactivées */
+  color: var(--color-dark-gray); 
+}
+.star.disabledStar {
+  cursor: default;
+  opacity: 0.8; /* Un peu moins visible si désactivé */
+}
+
+.ratingDisplay .star { /* Étoiles pour l'affichage de la note moyenne */
+    cursor: default; /* Pas cliquables */
+    font-size: 1.1rem; /* Taille cohérente avec le texte à côté */
+}
+.ratingDisplay .star.filledStar {
+    color: var(--color-black); /* Noir pour la note moyenne */
+}
+.ratingDisplay .star.emptyStar {
+    color: var(--color-lighter-gray); /* Gris très clair pour les étoiles vides de la moyenne */
+}
+
+.userRatingSection .star { /* Étoiles pour la notation utilisateur */
+    font-size: 1.5rem; /* Plus grandes pour la notation */
+}
+.userRatingSection .star:hover:not(.disabledStar) {
+  transform: scale(1.1); /* Léger grossissement au survol */
+}
+
+.loadingText, .disabledTextForRating {
+    font-size: var(--font-size-small);
+    color: var(--color-medium-gray);
+    margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+  .resourceDetailPage {
+    padding: 15px;
+  }
+  .resourceContentCard { /* Ajuster le nom de la classe */
+    padding: 20px; /* Réduire le padding sur mobile */
+  }
+  .resourceHeader h1 {
+    font-size: 2rem;
+  }
+  .sectionTitle, 
+  .progressSection .sectionTitle, /* Assurer la cohérence avec h2 */
+  .resourceSpecificContentSection .sectionTitle { /* Assurer la cohérence avec h2 */
+    font-size: var(--font-size-large);
+  }
+  .metaInfo {
+    font-size: var(--font-size-small);
+    gap: 5px 10px;
+  }
+  .progressActions {
+    flex-direction: column;
+    align-items: stretch; 
+  }
+  .progressActions button {
+    width: 100%; 
+    margin-bottom: 10px; 
+  }
+  .progressActions button:last-child {
+    margin-bottom: 0;
+  }
+}

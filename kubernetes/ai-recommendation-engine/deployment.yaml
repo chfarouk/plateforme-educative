@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-recommendation-engine
+  namespace: plateforme-educative
+  labels:
+    app: ai-recommendation-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-recommendation-engine
+  template:
+    metadata:
+      labels:
+        app: ai-recommendation-engine
+    spec:
+      containers:
+      - name: ai-recommendation-engine
+        image: plateforme_educative-ai-recommendation-engine:latest 
+        imagePullPolicy: IfNotPresent 
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_APP # Flask va chercher run.py par défaut
+          value: "run.py" # run:app si vous utilisiez gunicorn et que app est dans run.py
+        - name: FLASK_ENV
+          value: "development" 
+        - name: RECOMMENDER_PORT # Utilisé par run.py
+          value: "5000"
+        - name: CONTENT_SERVICE_URL_FOR_AI 
+          value: "http://content-service:3002/api/content" 
+        volumeMounts:
+        - name: ai-feedback-storage
+          mountPath: /app/user_negative_feedback.json 
+          subPath: user_negative_feedback.json 
+        readinessProbe:
+          httpGet:
+            path: /api/ai/health 
+            port: 5000
+          initialDelaySeconds: 45 
+          periodSeconds: 30
+          timeoutSeconds: 10 # L'initialisation peut être un peu longue
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /api/ai/health
+            port: 5000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+      volumes:
+      - name: ai-feedback-storage
+        persistentVolumeClaim:
+          claimName: ai-feedback-pvc

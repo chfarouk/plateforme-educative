@@ -1,0 +1,4 @@
+# .dockerignore (frontend-app)
+node_modules
+dist 
+.env # Si vous en avez un spécifique au frontend

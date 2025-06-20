@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-content-postgres
+  namespace: plateforme-educative
+  labels:
+    app: db-content-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-content-postgres
+  template:
+    metadata:
+      labels:
+        app: db-content-postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:14-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: PG_CONTENT_SERVICE_DB_NAME
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: PG_CONTENT_SERVICE_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: PG_CONTENT_SERVICE_PASSWORD
+        volumeMounts:
+        - name: pgdata-content
+          mountPath: /var/lib/postgresql/data
+        readinessProbe:
+          tcpSocket:
+            port: 5432
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 5432
+          initialDelaySeconds: 30
+          periodSeconds: 20
+      volumes:
+      - name: pgdata-content
+        persistentVolumeClaim:
+          claimName: db-content-postgres-pvc

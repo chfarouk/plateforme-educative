@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-recommendation-engine 
+  namespace: plateforme-educative
+  labels:
+    app: ai-recommendation-engine
+spec:
+  ports:
+  - name: http
+    port: 5000
+    targetPort: 5000
+  selector:
+    app: ai-recommendation-engine
+  type: ClusterIP

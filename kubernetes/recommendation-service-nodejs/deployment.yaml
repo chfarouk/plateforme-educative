@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendation-service-nodejs
+  namespace: plateforme-educative
+  labels:
+    app: recommendation-service-nodejs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommendation-service-nodejs
+  template:
+    metadata:
+      labels:
+        app: recommendation-service-nodejs
+    spec:
+      containers:
+      - name: recommendation-service-nodejs
+        image: plateforme_educative-recommendation-service-nodejs:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3004
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: PORT
+          value: "3004"
+        - name: SERVICE_NAME
+          value: "RecommendationNodeServiceK8s"
+        - name: DB_HOST
+          value: "db-reco-postgres"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: PG_RECO_SERVICE_DB_NAME
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: PG_RECO_SERVICE_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: PG_RECO_SERVICE_PASSWORD
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: JWT_SECRET
+        - name: CONTENT_SERVICE_URL # Communication interne K8s
+          value: "http://content-service:3002/api/content"
+        - name: PROGRESS_SERVICE_URL # Communication interne K8s
+          value: "http://progress-service:3003/api/progress"
+        - name: AI_ENGINE_URL # Communication interne K8s
+          value: "http://ai-recommendation-engine:5000/api/ai"
+        - name: AI_ENGINE_FEEDBACK_URL # Communication interne K8s
+          value: "http://ai-recommendation-engine:5000/api/ai/feedback"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3004
+          initialDelaySeconds: 25 # Ce service dépend de plusieurs autres
+          periodSeconds: 20
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3004
+          initialDelaySeconds: 45
+          periodSeconds: 20

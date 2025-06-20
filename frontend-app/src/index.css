@@ -1,0 +1,78 @@
+/* src/index.css */
+
+:root {
+  /* Palette de Couleurs Monochrome */
+  --color-black: #1a1a1a; /* Un noir profond, mais pas #000 pour éviter un contraste trop dur */
+  --color-dark-gray: #343a40;
+  --color-medium-gray: #6c757d;
+  --color-light-gray: #adb5bd;
+  --color-lighter-gray: #dee2e6; /* Pour les bordures subtiles */
+  --color-bg-gray: #f0f3f5;    /* Un gris très clair pour certains fonds de carte/section */
+  --color-white: #ffffff;
+  --color-off-white: #f8f9fa; /* Fond de page principal */
+
+  /* Couleur d'Accentuation (Destructive) */
+  --color-red-destructive: #dc3545;
+  --color-red-destructive-hover: #c82333;
+
+  /* Couleurs pour les messages d'erreur (basées sur le rouge) */
+  --color-error-bg: #f8d7da;
+  --color-error-text: #721c24;
+  --color-error-border: #f5c6cb;
+
+  /* Tailles de police de base (optionnel, mais peut aider à la cohérence) */
+  --font-size-small: 0.85rem;
+  --font-size-normal: 1rem;
+  --font-size-medium: 1.1rem;
+  --font-size-large: 1.3rem;
+  --font-size-xl: 1.6rem;
+  --font-size-xxl: 2.2rem;
+  --font-size-hero: 2.8rem;
+
+  /* Autres variables utiles */
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+  --box-shadow-light: 0 4px 12px rgba(0, 0, 0, 0.07);
+  --box-shadow-medium: 0 5px 15px rgba(0, 0, 0, 0.08);
+  --box-shadow-dark: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  color: var(--color-black); /* Texte principal noir */
+  background-color: var(--color-off-white); /* Fond de page blanc cassé */
+}
+
+a {
+  color: var(--color-dark-gray); /* Liens en gris foncé par défaut */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-black); /* Liens deviennent noirs au survol */
+  text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-black); /* Titres en noir par défaut */
+  margin-bottom: 0.5em; /* Espacement de base pour les titres */
+}
+
+button {
+  font-family: inherit; /* Assurer que les boutons héritent de la police du body */
+}

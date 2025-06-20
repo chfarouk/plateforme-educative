@@ -1,0 +1,182 @@
+/* src/pages/HomePage.module.css */
+.homePage {
+  text-align: center;
+}
+
+/* Hero Section */
+.heroSection {
+  background-color: var(--color-black); /* Fond noir pour le hero */
+  color: var(--color-white);
+  padding: 70px 20px; /* Ajuster padding */
+  position: relative;
+}
+
+.heroOverlay { /* Peut ne plus être nécessaire avec un fond uni */
+  display: none; 
+}
+
+.heroContent {
+  position: relative; 
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: var(--font-size-hero);
+  font-weight: bold;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  color: var(--color-white); /* Assurer que le titre est blanc */
+}
+
+.heroSubtitle {
+  font-size: var(--font-size-large);
+  margin-bottom: 40px;
+  color: var(--color-light-gray); /* Sous-titre en gris clair */
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: var(--border-radius-sm);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: var(--font-size-medium);
+  transition: all 0.3s ease;
+  margin: 8px; /* Un peu plus de marge */
+  border: 2px solid transparent;
+}
+
+.ctaButtonPrimary { /* "Commencer Gratuitement", "Accéder au Dashboard" */
+  background-color: var(--color-white); /* Bouton blanc */
+  color: var(--color-black); /* Texte noir */
+  border-color: var(--color-white);
+}
+
+.ctaButtonPrimary:hover {
+  background-color: var(--color-off-white); /* Blanc cassé au survol */
+  color: var(--color-black);
+  border-color: var(--color-off-white);
+  transform: translateY(-2px);
+}
+
+.ctaButtonSecondary { /* "Se Connecter" */
+  background-color: transparent;
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.ctaButtonSecondary:hover {
+  background-color: var(--color-white);
+  color: var(--color-black); 
+  transform: translateY(-2px);
+}
+
+.heroActions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; 
+}
+
+/* Features Section */
+.featuresSection {
+  padding: 60px 20px;
+  background-color: var(--color-white); 
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xxl);
+  margin-bottom: 40px;
+  color: var(--color-black);
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.featureCard {
+  background-color: var(--color-off-white); /* Fond de carte blanc cassé */
+  padding: 30px;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow-light);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--color-lighter-gray); /* Bordure subtile */
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-medium);
+}
+
+.featureIcon {
+  font-size: 2.8rem; 
+  color: var(--color-dark-gray); /* Icônes en gris foncé */
+  margin-bottom: 15px;
+  display: block; 
+}
+
+.featureTitle {
+  font-size: var(--font-size-large);
+  margin-bottom: 10px;
+  color: var(--color-black);
+}
+
+.featureText {
+  font-size: var(--font-size-normal);
+  color: var(--color-medium-gray);
+  line-height: 1.6;
+}
+
+/* Call to Action Section */
+.callToActionSection {
+  padding: 60px 20px;
+  background-color: var(--color-bg-gray); /* Fond gris très clair */
+}
+/* .sectionTitle est déjà défini */
+.callToActionSection p {
+  font-size: var(--font-size-medium);
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--color-medium-gray);
+}
+
+.ctaButtonLarge { /* "Inscrivez-vous Maintenant" */
+  padding: 15px 35px;
+  font-size: var(--font-size-large);
+  background-color: var(--color-black); 
+  color: var(--color-white);
+  border: 2px solid var(--color-black); /* Ajout d'une bordure pour définition */
+  border-radius: var(--border-radius-sm); /* Cohérence avec les autres boutons */
+  text-decoration: none; /* Assurer pas de soulignement */
+  font-weight: bold; /* Assurer le gras */
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease; /* Ajouter transform */
+}
+.ctaButtonLarge:hover {
+  background-color: var(--color-white); /* Fond blanc au survol */
+  color: var(--color-black);          /* Texte noir au survol */
+  border-color: var(--color-black);   /* Bordure noire pour contraste */
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: var(--font-size-xxl);
+  }
+  .heroSubtitle {
+    font-size: var(--font-size-medium);
+  }
+  .sectionTitle {
+    font-size: var(--font-size-xl);
+  }
+  .featuresGrid {
+    grid-template-columns: 1fr; 
+  }
+}

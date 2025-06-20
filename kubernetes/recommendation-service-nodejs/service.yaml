@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendation-service-nodejs
+  namespace: plateforme-educative
+  labels:
+    app: recommendation-service-nodejs
+spec:
+  ports:
+  - name: http
+    port: 3004
+    targetPort: 3004
+  selector:
+    app: recommendation-service-nodejs
+  type: ClusterIP

@@ -1,0 +1,55 @@
+# Fichiers et dossiers générés par les environnements de développement
+node_modules/
+npm-debug.log*
+yarn-error.log
+dist/
+build/
+coverage/
+*.env
+.env.*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dépendances Python et environnements virtuels
+venv/
+*.pyc
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+pip-wheel-metadata/
+*.egg-info/
+*.eggs/
+instance/ # Pour les configs Flask locales
+
+# Fichiers de log
+*.log
+logs/
+
+# Fichiers spécifiques aux OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Fichiers d'IDE et d'éditeur
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Fichiers Docker spécifiques (si vous voulez reconstruire à partir de zéro sur une autre machine)
+# Dépend de votre stratégie, mais généralement on ignore le cache de build local de Docker.
+# Par contre, les Dockerfile et docker-compose.yml DOIVENT être commités.
+
+# Fichier de feedback généré par le service IA Python (si vous ne voulez pas le versionner)
+# Si vous préférez qu'il soit versionné pour des tests initiaux, enlevez cette ligne.
+ai-recommendation-engine/user_negative_feedback.json 
+
+# Autres fichiers spécifiques au projet que vous ne voulez pas versionner
+# Exemple:
+# /frontend-app/dist/
+# /backend-service/some_temp_folder/

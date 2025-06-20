@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: plateforme-educative
+data:
+  # User Service DB
+  PG_USER_SERVICE_DB_NAME: "user_service_db" 
+  PG_USER_SERVICE_USER: "user_service_user"
+
+  # Content Service DB
+  PG_CONTENT_SERVICE_DB_NAME: "content_service_db"
+  PG_CONTENT_SERVICE_USER: "content_service_user"
+
+  # Progress Service DB
+  PG_PROGRESS_SERVICE_DB_NAME: "progress_service_db"
+  PG_PROGRESS_SERVICE_USER: "progress_service_user"
+
+  # Feedback Service DB
+  PG_FEEDBACK_SERVICE_DB_NAME: "feedback_service_db"
+  PG_FEEDBACK_SERVICE_USER: "feedback_service_user"
+
+  # Recommendation Service (Node.js) DB
+  PG_RECO_SERVICE_DB_NAME: "reco_service_db"
+  PG_RECO_SERVICE_USER: "reco_service_user"

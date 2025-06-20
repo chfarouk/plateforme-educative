@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service 
+  namespace: plateforme-educative
+  labels:
+    app: user-service
+spec:
+  ports:
+  - name: http # Nommer le port
+    port: 3001 
+    targetPort: 3001 
+  selector:
+    app: user-service
+  type: ClusterIP 

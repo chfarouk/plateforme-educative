@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-reco-postgres 
+  namespace: plateforme-educative
+  labels:
+    app: db-reco-postgres
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: db-reco-postgres
+  type: ClusterIP 
