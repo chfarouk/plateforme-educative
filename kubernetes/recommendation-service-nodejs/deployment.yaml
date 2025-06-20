@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
       - name: recommendation-service-nodejs
-        image: plateforme_educative-recommendation-service-nodejs:latest
-        imagePullPolicy: IfNotPresent
+        image: COF1409/plateforme-educative-recommendation-service-nodejs:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3004
         env:
@@ -52,19 +52,19 @@ spec:
             secretKeyRef:
               name: app-secrets
               key: JWT_SECRET
-        - name: CONTENT_SERVICE_URL # Communication interne K8s
+        - name: CONTENT_SERVICE_URL 
           value: "http://content-service:3002/api/content"
-        - name: PROGRESS_SERVICE_URL # Communication interne K8s
+        - name: PROGRESS_SERVICE_URL 
           value: "http://progress-service:3003/api/progress"
-        - name: AI_ENGINE_URL # Communication interne K8s
+        - name: AI_ENGINE_URL 
           value: "http://ai-recommendation-engine:5000/api/ai"
-        - name: AI_ENGINE_FEEDBACK_URL # Communication interne K8s
+        - name: AI_ENGINE_FEEDBACK_URL 
           value: "http://ai-recommendation-engine:5000/api/ai/feedback"
         readinessProbe:
           httpGet:
             path: /
             port: 3004
-          initialDelaySeconds: 25 # Ce service dépend de plusieurs autres
+          initialDelaySeconds: 25 
           periodSeconds: 20
         livenessProbe:
           httpGet:

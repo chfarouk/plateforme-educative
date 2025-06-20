@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
       - name: content-service
-        image: plateforme_educative-content-service:latest
-        imagePullPolicy: IfNotPresent
+        image: COF1409/plateforme-educative-content-service:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3002
         env:
@@ -47,8 +47,8 @@ spec:
             secretKeyRef:
               name: postgres-secrets
               key: PG_CONTENT_SERVICE_PASSWORD
-        - name: MONGO_URI # L'URI complète pour MongoDB
-          value: "mongodb://mongo-details-db:27017/ressources_details_db" # Utilise le nom du service K8s pour Mongo et le nom de la BDD
+        - name: MONGO_URI 
+          value: "mongodb://mongo-details-db:27017/ressources_details_db" 
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
@@ -58,7 +58,7 @@ spec:
           httpGet:
             path: /
             port: 3002
-          initialDelaySeconds: 20 # Donner un peu plus de temps à cause de la connexion à 2 BDD
+          initialDelaySeconds: 20 
           periodSeconds: 20
         livenessProbe:
           httpGet:

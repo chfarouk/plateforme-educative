@@ -17,16 +17,16 @@ spec:
     spec:
       containers:
       - name: ai-recommendation-engine
-        image: plateforme_educative-ai-recommendation-engine:latest 
-        imagePullPolicy: IfNotPresent 
+        image: COF1409/plateforme-educative-ai-recommendation-engine:latest 
+        imagePullPolicy: Always 
         ports:
         - containerPort: 5000
         env:
-        - name: FLASK_APP # Flask va chercher run.py par défaut
-          value: "run.py" # run:app si vous utilisiez gunicorn et que app est dans run.py
+        - name: FLASK_APP 
+          value: "run.py" 
         - name: FLASK_ENV
           value: "development" 
-        - name: RECOMMENDER_PORT # Utilisé par run.py
+        - name: RECOMMENDER_PORT 
           value: "5000"
         - name: CONTENT_SERVICE_URL_FOR_AI 
           value: "http://content-service:3002/api/content" 
@@ -40,7 +40,7 @@ spec:
             port: 5000
           initialDelaySeconds: 45 
           periodSeconds: 30
-          timeoutSeconds: 10 # L'initialisation peut être un peu longue
+          timeoutSeconds: 10 
           failureThreshold: 3
         livenessProbe:
           httpGet:
