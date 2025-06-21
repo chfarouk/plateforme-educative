@@ -30,6 +30,6 @@ jobs:
         context: ./ai-recommendation-engine 
         file: ./ai-recommendation-engine/Dockerfile 
         push: true
-        tags: VOTRE_DOCKERHUB_USERNAME/plateforme-educative-ai-recommendation-engine:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/plateforme-educative-ai-recommendation-engine:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max

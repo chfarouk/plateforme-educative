@@ -30,6 +30,6 @@ jobs:
         context: ./recommendation-service # Chemin vers le service Node.js
         file: ./recommendation-service/Dockerfile
         push: true
-        tags: VOTRE_DOCKERHUB_USERNAME/plateforme-educative-recommendation-service-nodejs:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/plateforme-educative-recommendation-service-nodejs:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max

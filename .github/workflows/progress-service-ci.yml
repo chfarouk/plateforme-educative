@@ -30,6 +30,6 @@ jobs:
         context: ./progress-service
         file: ./progress-service/Dockerfile
         push: true
-        tags: VOTRE_DOCKERHUB_USERNAME/plateforme-educative-progress-service:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/plateforme-educative-progress-service:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max

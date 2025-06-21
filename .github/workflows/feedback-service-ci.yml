@@ -30,6 +30,6 @@ jobs:
         context: ./feedback-service
         file: ./feedback-service/Dockerfile
         push: true
-        tags: VOTRE_DOCKERHUB_USERNAME/plateforme-educative-feedback-service:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/plateforme-educative-feedback-service:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
