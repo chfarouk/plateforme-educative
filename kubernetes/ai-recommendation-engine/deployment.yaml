@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: ai-recommendation-engine
-        image: cof1409/plateforme-educative-ai-recommendation-engine:latest 
+        image: cof1409/plateforme-educative-ai-recommendation-engine:latest # VOTRE NOM DOCKERHUB
         imagePullPolicy: Always 
         ports:
         - containerPort: 5000
