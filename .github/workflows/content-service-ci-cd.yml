@@ -1,0 +1,70 @@
+name: CI/CD - Content Service - Build, Push & Update K8s Manifest
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'content-service/**'
+      - '.github/workflows/content-service-ci-cd.yml'
+  workflow_dispatch:
+
+jobs:
+  build-push-and-update-manifest:
+    name: Build, Push Image & Update K8s Manifest for Content Service
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.get_sha.outputs.sha_short }}
+      image_name_on_hub: cof1409/plateforme-educative-content-service
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }} 
+    - name: Get short SHA for image tag
+      id: get_sha
+      run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+    - name: Define Docker Hub image name (for awk)
+      id: image_def_awk
+      run: echo "IMAGE_BASE_NAME_FOR_AWK=cof1409/plateforme-educative-content-service" >> $GITHUB_ENV
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push Content Service image
+      id: docker_build
+      uses: docker/build-push-action@v5
+      with:
+        context: ./content-service
+        file: ./content-service/Dockerfile
+        push: true
+        tags: |
+          cof1409/plateforme-educative-content-service:latest
+          cof1409/plateforme-educative-content-service:${{ env.IMAGE_TAG }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    - name: Update Kubernetes deployment manifest
+      env:
+        NEW_IMAGE_WITH_TAG: cof1409/plateforme-educative-content-service:${{ env.IMAGE_TAG }}
+      run: |
+        MANIFEST_FILE="kubernetes/content-service/deployment.yaml"
+        echo "Updating $MANIFEST_FILE with image: $NEW_IMAGE_WITH_TAG"
+        awk -v IMAGE_LINE="        image: ${NEW_IMAGE_WITH_TAG}" '/image:.*cof1409\/plateforme-educative-content-service:/ {print IMAGE_LINE; next} {print}' $MANIFEST_FILE > tmp_manifest.yaml && mv tmp_manifest.yaml $MANIFEST_FILE
+        echo "--- Content of $MANIFEST_FILE after update: ---"
+        cat $MANIFEST_FILE
+        echo "--- End of $MANIFEST_FILE ---"
+        git status
+    - name: Commit and push manifest changes
+      run: |
+        git config --global user.name "GitHub Actions Bot (ContentSvc)"
+        git config --global user.email "actions-bot@users.noreply.github.com"
+        git add kubernetes/content-service/deployment.yaml
+        if git diff --staged --quiet; then
+          echo "Aucun changement dans le manifeste de déploiement pour content-service."
+        else
+          git commit -m "CI: Update content-service K8s deployment to image tag ${{ env.IMAGE_TAG }}"
+          git push
+        fi
