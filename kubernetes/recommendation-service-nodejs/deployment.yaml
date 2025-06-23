@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: recommendation-service-nodejs
-        image: cof1409/plateforme-educative-recommendation-service-nodejs:latest # VOTRE NOM DOCKERHUB
+        image: cof1409/plateforme-educative-recommendation-service-nodejs:12e4725
         imagePullPolicy: Always
         ports:
         - containerPort: 3004
