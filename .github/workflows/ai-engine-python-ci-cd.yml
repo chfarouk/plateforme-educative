@@ -12,23 +12,24 @@ jobs:
   build-push-and-update-manifest:
     name: Build, Push Image & Update K8s Manifest for AI Recommendation Engine
     runs-on: ubuntu-latest
-    outputs:
-      image_tag: ${{ steps.get_sha.outputs.sha_short }}
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.ACTIONS_PAT }} # UTILISER LE PAT
+        token: ${{ secrets.ACTIONS_PAT }} 
 
     - name: Get short SHA for image tag
       id: get_sha
       run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-    - name: Define Docker Hub image name
-      id: image_def
-      run: echo "IMAGE_NAME_ON_HUB=cof1409/plateforme-educative-ai-recommendation-engine" >> $GITHUB_ENV
-
+    - name: Define Service-Specific Variables
+      run: |
+        echo "IMAGE_NAME_ON_HUB=cof1409/plateforme-educative-ai-recommendation-engine" >> $GITHUB_ENV
+        echo "SERVICE_DIR_NAME=ai-recommendation-engine" >> $GITHUB_ENV
+        echo "SERVICE_NAME_FOR_COMMIT=AIEngine" >> $GITHUB_ENV
+        echo "K8S_MANIFEST_PATH=kubernetes/ai-recommendation-engine/deployment.yaml" >> $GITHUB_ENV
+      
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
@@ -39,11 +40,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build and push AI Recommendation Engine image
-      id: docker_build
       uses: docker/build-push-action@v5
       with:
-        context: ./ai-recommendation-engine 
-        file: ./ai-recommendation-engine/Dockerfile 
+        context: ./${{ env.SERVICE_DIR_NAME }}
+        file: ./${{ env.SERVICE_DIR_NAME }}/Dockerfile 
         push: true
         tags: |
           ${{ env.IMAGE_NAME_ON_HUB }}:latest
@@ -52,12 +52,14 @@ jobs:
         cache-to: type=gha,mode=max
 
     - name: Update Kubernetes deployment manifest
-      env:
-        NEW_IMAGE_WITH_TAG: ${{ env.IMAGE_NAME_ON_HUB }}:${{ env.IMAGE_TAG }}
       run: |
-        MANIFEST_FILE="kubernetes/ai-recommendation-engine/deployment.yaml"
+        MANIFEST_FILE="${{ env.K8S_MANIFEST_PATH }}"
+        NEW_IMAGE_WITH_TAG="${{ env.IMAGE_NAME_ON_HUB }}:${{ env.IMAGE_TAG }}"
+        IMAGE_BASE_FOR_AWK=$(echo "${{ env.IMAGE_NAME_ON_HUB }}" | sed 's/\//\\\//g')
+
         echo "Updating $MANIFEST_FILE with image: $NEW_IMAGE_WITH_TAG"
-        awk -v IMAGE_LINE="        image: ${NEW_IMAGE_WITH_TAG}" '/image:.*cof1409\/plateforme-educative-ai-recommendation-engine:/ {print IMAGE_LINE; next} {print}' $MANIFEST_FILE > tmp_manifest.yaml && mv tmp_manifest.yaml $MANIFEST_FILE
+        awk -v IMAGE_LINE="        image: ${NEW_IMAGE_WITH_TAG}" -v IMG_SEARCH_PATTERN="image:.*${IMAGE_BASE_FOR_AWK}:" '$0 ~ IMG_SEARCH_PATTERN {print IMAGE_LINE; next} {print}' $MANIFEST_FILE > tmp_manifest.yaml && mv tmp_manifest.yaml $MANIFEST_FILE
+        
         echo "--- Content of $MANIFEST_FILE after update: ---"
         cat $MANIFEST_FILE
         echo "--- End of $MANIFEST_FILE ---"
@@ -65,12 +67,15 @@ jobs:
 
     - name: Commit and push manifest changes
       run: |
-        git config --global user.name "GitHub Actions Bot (AIEngine)"
+        git config --global user.name "GitHub Actions Bot (${{ env.SERVICE_NAME_FOR_COMMIT }})"
         git config --global user.email "chfarouk@users.noreply.github.com"
-        git add kubernetes/ai-recommendation-engine/deployment.yaml
+        git add ${{ env.K8S_MANIFEST_PATH }}
         if git diff --staged --quiet; then
-          echo "Aucun changement dans le manifeste de déploiement pour ai-recommendation-engine."
+          echo "Aucun changement dans le manifeste de déploiement pour ${{ env.SERVICE_NAME_FOR_COMMIT }}."
         else
-          git commit -m "CI: Update ai-engine K8s deployment to image tag ${{ env.IMAGE_TAG }} [skip ci]"
-          git push
+          echo "Changements détectés. Tentative de commit et push."
+          git commit -m "CI: Update ${{ env.SERVICE_NAME_FOR_COMMIT }} K8s deployment to image tag ${{ env.IMAGE_TAG }} [skip ci]"
+          git pull origin main --rebase 
+          git push origin main
+          echo "Push réussi pour ${{ env.SERVICE_NAME_FOR_COMMIT }}."
         fi
