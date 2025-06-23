@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: content-service
-        image: cof1409/plateforme-educative-content-service:c6915e2
+        image: cof1409/plateforme-educative-content-service:12e4725
         imagePullPolicy: Always
         ports:
         - containerPort: 3002
