@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: cof1409/plateforme-educative-user-service:latest # VOTRE NOM DOCKERHUB
+        image: cof1409/plateforme-educative-user-service:12e4725
         imagePullPolicy: Always 
         ports:
         - containerPort: 3001 
